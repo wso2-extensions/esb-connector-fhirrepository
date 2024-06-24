@@ -1,0 +1,212 @@
+{
+  "connectorName": "fhirrepository",
+  "operationName": "init",
+  "title": "Init",
+  "help": "<h1>Init</h1> <b>The init operation.</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Search",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "search",
+                    "displayName": "Search",
+                    "inputType": "searchBox",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Search for an attribute using the display name"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "repositoryType",
+                    "displayName": "Repository Type",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "Azure",
+                    "required": "true",
+                    "comboValues" : [
+                      "Azure",
+                      "Other"
+                    ],
+                    "helpTip": "Vendor of the FHIR repository."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "base",
+                    "displayName": "Base URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The service root URL."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "accessToken",
+                    "displayName": "Access Token",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Represents the authorization of a specific application to access specific parts of a user’s data."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "clientId",
+                    "displayName": "Client ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Client ID of the registered application."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "clientSecret",
+                    "displayName": "Client Secret",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Client secret of the registered application."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "tokenEndpoint",
+                    "displayName": "Token Endpoint",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "An HTTP endpoint that can be uses to obtain an access token."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "resource",
+                    "displayName": "Resource",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The resource URL to which the access token will be generated.",
+                    "enableCondition" : [
+                      {
+                        "repositoryType" : "Azure"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value" : {
+              "groupName": "Bulk Operation",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requireBulk",
+                    "displayName": "Require Bulk",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "false",
+                    "required": "false",
+                    "comboValues" : [
+                      "false",
+                      "true"
+                    ],
+                    "helpTip": "Whether bulk operations are required or not."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "storageAccountUrl",
+                    "displayName": "Azure Storage Account URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Azure Storage Account URL.",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "repositoryType" : "Azure"
+                      },
+                      {
+                        "requireBulk" : "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "storageResourceUrl",
+                    "displayName": "Azure Storage Resource URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Azure Storage Resource URL.",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "repositoryType" : "Azure"
+                      },
+                      {
+                        "requireBulk" : "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "xmsVersion",
+                    "displayName": "Azure Storage API Version",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Azure Storage API Version.",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "repositoryType" : "Azure"
+                      },
+                      {
+                        "requireBulk" : "true"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

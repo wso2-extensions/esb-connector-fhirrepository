@@ -1,0 +1,183 @@
+{
+  "connectorName": "fhirrepository",
+  "operationName": "bulkStatus",
+  "title": "Bulk Status",
+  "help": "<h1>Status</h1> <b>The bulk status operation.</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Search",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "search",
+                    "displayName": "Search",
+                    "inputType": "searchBox",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Search for an attribute using the display name"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "contentLocation",
+                    "displayName": "Content Location",
+                    "inputType": "stringOrExpression",
+                    "required": "true",
+                    "helpTip": "Content location of the exported data."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "selectContext",
+                    "displayName": "Select Context",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "http",
+                    "required": "false",
+                    "comboValues": [
+                      "http",
+                      "non-http"
+                    ],
+                    "helpTip": "Select if operation used in non-http context."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestType",
+                    "displayName": "Select Request Type",
+                    "inputType": "comboOrExpression",
+                    "required": "false",
+                    "comboValues": [
+                      "GET",
+                      "DELETE"
+                    ],
+                    "helpTip": "Status request type.",
+                    "enableCondition" : [
+                      {
+                        "selectContext" : "non-http"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "URL Rewrite",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "urlRewriteContentLocation",
+                    "displayName": "Enable URL Rewrite of File Locations",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "comboValues": [
+                      "true",
+                      "false"
+                    ],
+                    "helpTip": "If enabled, file server url in the file locations url will be replaced with the server url."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "fileApiContext",
+                    "displayName": "Context of File API",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Context of File API to be appended to the file url.",
+                    "enableCondition": [
+                      {
+                        "urlRewriteContentLocation": "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "accessControl",
+                    "displayName": "Enable Access Control of File Locations",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "comboValues": [
+                      "true",
+                      "false"
+                    ],
+                    "helpTip": "If enabled, file location url will be appended with a token that maps the file location to some unique identifiers.",
+                    "enableCondition": [
+                      {
+                        "urlRewriteContentLocation": "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "claimOne",
+                    "displayName": "Unique Identifier Option 1",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Unique identifer that should be mapped with the file location",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "urlRewriteContentLocation" : "true"
+                      },
+                      {
+                        "accessControl" : "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "claimTwo",
+                    "displayName": "Unique Identifier Option 2",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Unique identifer that should be mapped with the file location",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "urlRewriteContentLocation" : "true"
+                      },
+                      {
+                        "accessControl" : "true"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

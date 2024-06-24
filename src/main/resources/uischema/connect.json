@@ -1,0 +1,65 @@
+{
+  "connectorName" : "fhirrepository",
+  "operationName" : "connect",
+  "title" : "Connect",
+  "help" : "<h1>Connect</h1> <b>The connect operation.</b>",
+  "elements" : [
+    {
+      "type" : "attributeGroup",
+      "value" : {
+        "groupName" : "General",
+        "elements" : [
+          {
+            "type" : "attributeGroup",
+            "value" : {
+              "groupName" : "Search",
+              "elements" : [
+                {
+                  "type" : "attribute",
+                  "value" : {
+                    "name" : "search",
+                    "displayName" : "Search",
+                    "inputType" : "searchBox",
+                    "defaultValue" : "",
+                    "required" : "false",
+                    "helpTip" : "Search for an attribute using the display name"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type" : "attributeGroup",
+            "value" : {
+              "groupName" : "Basic",
+              "elements" : [
+                {
+                  "type" : "attribute",
+                  "value" : {
+                    "name" : "resourceType",
+                    "displayName" : "Resource Type",
+                    "inputType" : "stringOrExpression",
+                    "defaultValue" : "",
+                    "required" : "false",
+                    "helpTip" : "The type of the resource to be created."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "urlRewrite",
+                    "displayName": "URL Rewrite",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "helpTip": "Do you want to rewrite FHIR server URL?"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
