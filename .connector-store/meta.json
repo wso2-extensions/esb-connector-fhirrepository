@@ -1,0 +1,22 @@
+{
+  "name" : "FHIR Repository Connector",
+  "owner" : "WSO2",
+  "category": "Developer Tools",
+  "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/fhirrepository-connector/fhirrepository-connector-overview/",
+  "description": "The FHIR Repository Connector allows you to connect to a FHIR repository/store and perform standard FHIR interactions.",
+  "status": "Active",
+  "labels": [
+    "FHIR",
+    "Healthcare"
+  ],
+  "releases": [
+    {
+      "tagName": "1.0.0",
+      "products": [
+        "MI 4.2.0",
+        "MI 1.2.0",
+        "EI 6.6.0"
+      ]
+    }
+  ]
+}

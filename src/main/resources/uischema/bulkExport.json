@@ -1,0 +1,222 @@
+{
+  "connectorName": "fhirrepository",
+  "operationName": "bulkExport",
+  "title": "Export",
+  "help": "<h1>Export</h1> <b>The Export operation.</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Search",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "search",
+                    "displayName": "Search",
+                    "inputType": "searchBox",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Search for an attribute using the display name"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "level",
+                    "displayName": "Export Level",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "System",
+                    "required": "true",
+                    "comboValues": [
+                      "System",
+                      "Patient",
+                      "Group"
+                    ],
+                    "helpTip": "Bulk export level."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "groupId",
+                    "displayName": "Group ID",
+                    "inputType": "string",
+                    "required": "false",
+                    "helpTip": "Group ID to be exported.",
+                    "enableCondition": [
+                      {
+                        "level": "Group"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Query Parameters",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "_outputFormat",
+                    "displayName": "Output Format",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Output format of the exported file content."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "_since",
+                    "displayName": "Since",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Output format."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "_type",
+                    "displayName": "Type",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Types of resources to be included in the response."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "_typeFilter",
+                    "displayName": "Type Filter",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Output format."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "URL Rewrite",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "urlRewriteContentLocation",
+                    "displayName": "Enable URL Rewrite of Content Location",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "comboValues": [
+                      "true",
+                      "false"
+                    ],
+                    "helpTip": "If enabled, base url in the content location header will be replaced with the server url."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "statusApiContext",
+                    "displayName": "Context of Status API",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Context of Status API to be appended to the content location.",
+                    "enableCondition": [
+                      {
+                        "urlRewriteContentLocation": "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "accessControl",
+                    "displayName": "Enable Access Control of Content Location",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "comboValues": [
+                      "true",
+                      "false"
+                    ],
+                    "helpTip": "If enabled, content location header will be appended with a token that maps the content location to some unique identifiers.",
+                    "enableCondition": [
+                      {
+                        "urlRewriteContentLocation": "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "claimOne",
+                    "displayName": "Unique Identifier Option 1",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Unique identifer that should be mapped with the content location",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "urlRewriteContentLocation" : "true"
+                      },
+                      {
+                        "accessControl" : "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "claimTwo",
+                    "displayName": "Unique Identifier Option 2",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Unique identifer that should be mapped with the content location",
+                    "enableCondition" : [
+                      "AND",
+                      {
+                        "urlRewriteContentLocation" : "true"
+                      },
+                      {
+                        "accessControl" : "true"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
