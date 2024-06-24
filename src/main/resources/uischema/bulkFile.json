@@ -1,0 +1,98 @@
+{
+  "connectorName": "fhirrepository",
+  "operationName": "bulkFile",
+  "title": "Bulk File",
+  "help": "<h1>File</h1> <b>The bulk file operation.</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Search",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "search",
+                    "displayName": "Search",
+                    "inputType": "searchBox",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Search for an attribute using the display name"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "fileLocation",
+                    "displayName": "File Location",
+                    "inputType": "stringOrExpression",
+                    "required": "true",
+                    "helpTip": "Location of an exported file."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "accessControl",
+                    "displayName": "Enable Access Control of File Locations",
+                    "inputType": "comboOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "comboValues": [
+                      "true",
+                      "false"
+                    ],
+                    "helpTip": "If enabled, access control will be applied to file locations."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "claimOne",
+                    "displayName": "Unique Identifier Option 1",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Unique identifer that should be mapped with the file location",
+                    "enableCondition" : [
+                      {
+                        "accessControl" : "true"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "claimTwo",
+                    "displayName": "Unique Identifier Option 2",
+                    "inputType": "stringOrExpression",
+                    "required": "false",
+                    "helpTip": "Unique identifer that should be mapped with the file location",
+                    "enableCondition" : [
+                      {
+                        "accessControl" : "true"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

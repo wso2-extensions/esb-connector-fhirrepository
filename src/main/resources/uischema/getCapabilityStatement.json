@@ -1,0 +1,54 @@
+{
+  "connectorName" : "fhirrepository",
+  "operationName" : "getCapabilityStatement",
+  "title" : "Get Capability Statement",
+  "help" : "<h1>Get Capability Statement</h1> <b>The getCapabilityStatement operation.</b>",
+  "elements" : [
+    {
+      "type" : "attributeGroup",
+      "value" : {
+        "groupName" : "General",
+        "elements" : [
+          {
+            "type" : "attributeGroup",
+            "value" : {
+              "groupName" : "Search",
+              "elements" : [
+                {
+                  "type" : "attribute",
+                  "value" : {
+                    "name" : "search",
+                    "displayName" : "Search",
+                    "inputType" : "searchBox",
+                    "defaultValue" : "",
+                    "required" : "false",
+                    "helpTip" : "Search for an attribute using the display name"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "urlRewrite",
+                    "displayName": "URL Rewrite",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "true",
+                    "required": "false",
+                    "helpTip": "Do you want to rewrite FHIR server URL?"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

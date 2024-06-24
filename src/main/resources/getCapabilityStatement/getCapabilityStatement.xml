@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  ~
+  -->
+
+<template name="getCapabilityStatement" onError="fault" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="urlRewrite" description="Are you want to rewrite FHIR server URL"/>
+
+    <sequence>
+        <property name="_OH_INTERNAL_REWRITE_URL_" expression="$func:urlRewrite"/>
+
+        <header name="Accept" scope="transport" value="application/json+fhir"/>
+        <header name="Content-Type" scope="transport" value="application/json+fhir"/>
+        <filter source="boolean($ctx:_OH_INTERNAL_FHIR_REPO_ACCESS_TOKEN_)" regex="true">
+            <then>
+                <header name="Authorization" expression="fn:concat('Bearer ', $ctx:_OH_INTERNAL_FHIR_REPO_ACCESS_TOKEN_)"
+                        scope="transport" />
+            </then>
+            <else>
+                <log category="ERROR" description="FAULT" level="custom">
+                    <property name="ERROR" value="Access token is not there. Authorization issue will occur"/>
+                </log>
+                <class name="org.wso2.healthcare.integration.common.mediators.FHIRSynapseExceptionHanlder">
+                    <property name="errorSeverity" value="error"/>
+                    <property name="errorCode" value="login"/>
+                    <property name="errorDetailCode" value="Login Required"/>
+                    <property name="errorDetailSystem" value="Access token is not there. Authorization issue will occur."/>
+                    <property name="errorDiagnostic" value="Authentication failed."/>
+                </class>
+            </else>
+        </filter>
+        <call>
+            <endpoint>
+                <http method="GET" uri-template="{uri.var._OH_INTERNAL_FHIR_REPO_BASE_}/metadata"/>
+            </endpoint>
+        </call>
+        <filter source="boolean($ctx:_OH_INTERNAL_REWRITE_URL_)" regex="true">
+            <then>
+                <class name="org.wso2.healthcare.integration.fhir.repository.ServerUrlRewrite"/>
+            </then>
+        </filter>
+    </sequence>
+</template>

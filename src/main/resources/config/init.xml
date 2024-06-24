@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  ~
+  -->
+
+<template name="init" onError="fault" xmlns="http://ws.apache.org/ns/synapse">
+	<!--Getting values from developer inputs-->
+	<parameter name="repositoryType" description="The type of the FHIR Repository. Options: Azure" />
+	<parameter name="base" description="The service root URL." />
+	<parameter name="accessToken"
+			   description="Represents the authorization of a specific application to access specific parts of a user’s data." />
+	<parameter name="clientId" description="Client ID of the registered application." />
+	<parameter name="clientSecret" description="Client secret of the registered application." />
+	<parameter name="tokenEndpoint" description="An HTTP endpoint that can be uses to obtain an access token." />
+	<parameter name="resource" description="Azure resource for which the token to be generated"/>
+	<parameter name="requireBulk" description="Select whether bulk to be enabled or not"/>
+	<parameter name="storageAccountUrl" description="Azure storage account url"/>
+	<parameter name="storageResourceUrl" description="Azure storage resource url"/>
+	<parameter name="xmsVersion" description="Azure storage api version"/>
+
+	<sequence>
+		<switch source="$func:repositoryType">
+			<case regex="Azure">
+				<class name="org.wso2.healthcare.integration.fhir.repository.azure.AzureConfigurationHandler"/>
+				<class name="org.wso2.healthcare.integration.fhir.repository.azure.AzureAccessTokenHandler"/>
+			</case>
+			<default>
+				<class name="org.wso2.healthcare.integration.fhir.repository.BaseConfigurationHandler"/>
+				<class name="org.wso2.healthcare.integration.fhir.repository.BaseAccessTokenHandler"/>
+			</default>
+		</switch>
+	</sequence>
+</template>

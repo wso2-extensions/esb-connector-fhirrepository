@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  ~
+  -->
+
+<template name="bulkFile" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="fileLocation"/>
+    <parameter name="accessControl"/>
+    <parameter name="claimOne"/>
+    <parameter name="claimTwo"/>
+    <sequence>
+        <filter source="boolean($ctx:_OH_INTERNAL_AZURE_STORAGE_TOKEN_)" regex="true">
+            <then>
+                <header name="Authorization" expression="fn:concat('Bearer ', $ctx:_OH_INTERNAL_AZURE_STORAGE_TOKEN_)"
+                        scope = "transport" />
+            </then>
+            <else>
+                <filter source="boolean($ctx:_OH_INTERNAL_FHIR_REPO_ACCESS_TOKEN_)" regex="true">
+                    <then>
+                        <header name="Authorization" expression="fn:concat('Bearer ', $ctx:_OH_INTERNAL_FHIR_REPO_ACCESS_TOKEN_)"
+                                scope = "transport" />
+                    </then>
+                    <else>
+                        <log category="ERROR" description="FAULT" level="custom">
+                            <property name="ERROR" value="Access token is not there. Authorization issue will occur"/>
+                        </log>
+                         <class name="org.wso2.healthcare.integration.common.mediators.FHIRSynapseExceptionHanlder">
+                            <property name="errorSeverity" value="error"/>
+                            <property name="errorCode" value="login"/>
+                            <property name="errorDetailCode" value="Login Required"/>
+                            <property name="errorDetailSystem" value="Access token is not there. Authorization issue will occur."/>
+                            <property name="errorDiagnostic" value="Authentication failed."/>
+                        </class>
+                    </else>
+                </filter>
+            </else>
+        </filter>
+
+        <!-- extract file location -->
+        <filter source="fn:starts-with($func:fileLocation, $ctx:uri.var._OH_INTERNAL_FHIR_REPO_BASE_)" regex="true">
+            <then>
+                <property name="_OH_INTERNAL_FHIR_REPO_CONTENT_LOCATION_"
+                          expression="fn:substring-after($func:fileLocation, $ctx:uri.var._OH_INTERNAL_FHIR_REPO_BASE_)"/>
+            </then>
+            <else>
+                <property name="_OH_INTERNAL_FHIR_REPO_CONTENT_LOCATION_" expression="$func:fileLocation"/>
+            </else>
+        </filter>
+        <filter source="fn:contains($ctx:_OH_INTERNAL_FHIR_REPO_CONTENT_LOCATION_, '?')" regex="true">
+            <then>
+                <property name="_OH_INTERNAL_FHIR_REPO_CONTENT_LOCATION_"
+                          expression="fn:substring-before($func:fileLocation, '?')"/>
+            </then>
+        </filter>
+        <property name="uri.var.FileLocation" expression="$ctx:_OH_INTERNAL_FHIR_REPO_CONTENT_LOCATION_"/>
+
+        <!-- engage access control if enabled-->
+        <filter source="$func:accessControl" regex="true">
+            <then>
+                <!-- throw error if both ids are empty -->
+                <filter source="boolean($func:claimOne) and boolean($func:claimTwo)"
+                        regex="false">
+                    <then>
+                        <log category="ERROR" description="FAULT" level="custom">
+                            <property name="ERROR"
+                                      value="Both unique IDs for access control cannot be empty"/>
+                        </log>
+                        <class name="org.wso2.healthcare.integration.common.mediators.FHIRSynapseExceptionHanlder">
+                            <property name="errorSeverity" value="error"/>
+                            <property name="errorCode" value="export"/>
+                            <property name="errorDetailCode" value="IDs for Access Control Required"/>
+                            <property name="errorDetailSystem"
+                                      value="Values required for providing access control of the content location are missing."/>
+                            <property name="errorDiagnostic" value="Access control failed."/>
+                        </class>
+                    </then>
+                </filter>
+                <property name="_OH_INTERNAL_FHIR_REPO_UNIQUE_ID_ONE_" expression="$func:claimOne"
+                          type="STRING"/>
+                <property name="_OH_INTERNAL_FHIR_REPO_UNIQUE_ID_TWO_" expression="$func:claimTwo"
+                          type="STRING"/>
+                <property name="_OH_INTERNAL_FHIR_REPO_TOKEN_" expression="$url:token"/>
+                <class name="org.wso2.healthcare.integration.fhir.repository.ClientToContentVerifier"/>
+            </then>
+        </filter>
+
+        <property name="uri.var.Storage" expression="$ctx:_OH_INTERNAL_STORAGE_ACC_URL_"/>
+        <header name="x-ms-version" expression="$ctx:_OH_INTERNAL_STORAGE_API_VERSION_" scope="transport"/>
+        <call>
+            <endpoint>
+                <http method="GET" uri-template="{uri.var.Storage}{+uri.var.FileLocation}"/>
+            </endpoint>
+        </call>
+        <property name="tmpContentType" expression="$trp:Content-Type"/>
+        <property name="TRANSPORT_HEADERS" action="remove" scope="axis2"/>
+        <filter source="boolean($ctx:tmpContentType)" regex="true">
+            <then>
+                <property name="Content-Type" expression="$ctx:tmpContentType" scope="transport"/>
+            </then>
+        </filter>
+    </sequence>
+</template>
