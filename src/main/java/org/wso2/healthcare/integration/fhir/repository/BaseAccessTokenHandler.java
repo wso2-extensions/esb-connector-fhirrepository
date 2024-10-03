@@ -39,6 +39,10 @@ public class BaseAccessTokenHandler extends ClientCredentialsAccessTokenHandler 
             String clientId = (String) messageContext.getProperty(org.wso2.healthcare.integration.fhir.repository.Constants.FHIR_REPO_CLIENT_ID);
             String clientSecret = (String) messageContext.getProperty(org.wso2.healthcare.integration.fhir.repository.Constants.FHIR_REPO_CLIENT_SECRET);
             String tokenEndpoint = (String) messageContext.getProperty(org.wso2.healthcare.integration.fhir.repository.Constants.FHIR_REPO_TOKEN_ENDPOINT);
+            if (StringUtils.isEmpty(clientId) && StringUtils.isEmpty(clientSecret) && StringUtils.isEmpty(tokenEndpoint)) {
+                // no auth scenario
+                return;
+            }
             // to keep any other parameters need for the token generation
             Map<String, String> payloadParametersMap = new HashMap<>();
             Token token = TokenManager.getToken(clientId, tokenEndpoint);

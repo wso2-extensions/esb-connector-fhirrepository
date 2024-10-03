@@ -19,19 +19,37 @@
 package org.wso2.healthcare.integration.fhir.repository;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.healthcare.integration.common.HealthcareIntegratorEnvironment;
+import org.wso2.healthcare.integration.common.HealthcareIntegratorInitializer;
 import org.wso2.healthcare.integration.common.OHServerCommonDataHolder;
+import org.wso2.healthcare.integration.common.OpenHealthcareException;
 import org.wso2.healthcare.integration.common.config.model.FHIRRepositoryConfig;
 import org.wso2.healthcare.integration.common.config.model.HealthcareIntegratorConfig;
 import org.wso2.healthcare.integration.common.utils.MiscellaneousUtils;
+import org.wso2.healthcare.integration.fhir.utils.FHIRConnectorUtils;
+
+import java.util.HashMap;
 
 /**
  * The class that handles the connector config. Configs can be passed via connector init operation.
  * Else, it will be retrieved from the deployment.toml
  */
 public class BaseConfigurationHandler extends AbstractConnector {
+
+    private static final Log LOG = LogFactory.getLog(BaseConfigurationHandler.class);
+
+    public BaseConfigurationHandler() {
+        HealthcareIntegratorInitializer healthcareIntegratorInitializer = new HealthcareIntegratorInitializer();
+        try {
+            healthcareIntegratorInitializer.initialize();
+        } catch (OpenHealthcareException e) {
+            LOG.error("Error occurred while initializing the Healthcare Integrator", e);
+        }
+    }
 
     @Override
     public void connect(MessageContext messageContext) {
@@ -40,18 +58,21 @@ public class BaseConfigurationHandler extends AbstractConnector {
                 OHServerCommonDataHolder.getInstance().getHealthcareIntegratorEnvironment();
         HealthcareIntegratorConfig config = integratorEnvironment.getHealthcareIntegratorConfig();
         FHIRRepositoryConfig fhirRepositoryConfig = config.getFHIRServerConfig().getFhirRepositoryConfig();
+        HashMap<String, String> configuredParams = FHIRConnectorUtils.getConfiguredParams(messageContext);
 
         String fhirServerUrl = config.getFHIRServerConfig().getBaseUrl();
-        if (StringUtils.isNotBlank(fhirServerUrl)) {
-            if (StringUtils.endsWith(fhirServerUrl, "/")) {
-                fhirServerUrl = StringUtils.removeEnd(fhirServerUrl, "/");
-            }
-            messageContext.setProperty(org.wso2.healthcare.integration.common.Constants.OH_INTERNAL_FHIR_SERVER_URL,
-                                       fhirServerUrl);
+        if (StringUtils.isBlank(fhirServerUrl) && configuredParams.containsKey("base")) {
+            fhirServerUrl = configuredParams.get("base");
         } else {
+            LOG.error("FHIR Server URL is missing.");
             MiscellaneousUtils.populateAndThrowSynapseException(messageContext, "error", "config", "ServerUrl Required",
                                "Server URL is missing.", "Missing configuration.");
         }
+        if (StringUtils.endsWith(fhirServerUrl, "/")) {
+            fhirServerUrl = StringUtils.removeEnd(fhirServerUrl, "/");
+        }
+        messageContext.setProperty(org.wso2.healthcare.integration.common.Constants.OH_INTERNAL_FHIR_SERVER_URL,
+                fhirServerUrl);
 
         String repositoryTypeParam = (String) getParameter(messageContext, org.wso2.healthcare.integration.fhir.repository.Constants.REPOSITORY_TYPE);
         String baseParam = (String) getParameter(messageContext, org.wso2.healthcare.integration.fhir.repository.Constants.BASE);
@@ -81,8 +102,6 @@ public class BaseConfigurationHandler extends AbstractConnector {
                 messageContext.setProperty(org.wso2.healthcare.integration.fhir.repository.Constants.FHIR_REPO_CLIENT_ID, clientId);
                 messageContext.setProperty(org.wso2.healthcare.integration.fhir.repository.Constants.FHIR_REPO_CLIENT_SECRET, clientSecret);
                 messageContext.setProperty(Constants.FHIR_REPO_TOKEN_ENDPOINT, tokenEndpoint);
-            } else {
-                handleMissingParams(messageContext);
             }
 
         } else {
@@ -91,7 +110,7 @@ public class BaseConfigurationHandler extends AbstractConnector {
     }
 
     private void handleMissingParams(MessageContext messageContext) {
-
+        LOG.error("Some required parameters for the connector init are missing.");
         MiscellaneousUtils.populateAndThrowSynapseException(messageContext, "error", "login", "Login Required",
                             "Some required parameters for the connector init are missing.", "Authentication failed.");
     }

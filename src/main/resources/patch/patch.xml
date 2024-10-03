@@ -36,16 +36,9 @@
                                 scope="transport" />
                     </then>
                     <else>
-                        <log category="ERROR" description="FAULT" level="custom">
-                            <property name="ERROR" value="Access token is not there. Authorization issue will occur"/>
+                        <log category="WARN" description="FAULT" level="custom">
+                            <property name="Info" value="Access token is not present. Accessing FHIR server with no auth."/>
                         </log>
-                        <class name="org.wso2.healthcare.integration.common.mediators.FHIRSynapseExceptionHanlder">
-                            <property name="errorSeverity" value="error"/>
-                            <property name="errorCode" value="login"/>
-                            <property name="errorDetailCode" value="Login Required"/>
-                            <property name="errorDetailSystem" value="Access token is not there. Authorization issue will occur."/>
-                            <property name="errorDiagnostic" value="Authentication failed."/>
-                        </class>
                     </else>
                 </filter>
                 <call>

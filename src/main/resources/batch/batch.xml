@@ -41,7 +41,7 @@
             </else>
         </filter>
 
-        <header name="Accept" scope="transport" value="application/json+fhir" action="set"/>
+        <header name="Accept" scope="transport" value="application/fhir+json" action="set"/>
 
         <call>
             <endpoint>
