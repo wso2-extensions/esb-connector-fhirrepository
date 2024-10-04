@@ -19,8 +19,12 @@
 package org.wso2.healthcare.integration.fhir.repository;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
+import org.wso2.healthcare.integration.common.HealthcareIntegratorInitializer;
+import org.wso2.healthcare.integration.common.OpenHealthcareException;
 import org.wso2.healthcare.integration.common.utils.MiscellaneousUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -31,9 +35,19 @@ import java.net.URLEncoder;
  */
 public class ExportQueryBuilder extends AbstractConnector {
 
+    private static final Log LOG = LogFactory.getLog(ExportQueryBuilder.class);
     private static final String encoding = "UTF-8";
     private static final String URL_QUERY = "uri.var.urlQuery";
     private String parameterNames = "";
+
+    public ExportQueryBuilder() {
+        HealthcareIntegratorInitializer healthcareIntegratorInitializer = new HealthcareIntegratorInitializer();
+        try {
+            healthcareIntegratorInitializer.initialize();
+        } catch (OpenHealthcareException e) {
+            LOG.error("Error occurred while initializing the Healthcare Integrator", e);
+        }
+    }
 
     public String getParameterNames() {
 

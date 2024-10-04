@@ -22,28 +22,21 @@
     <parameter name="urlRewrite" description="Do you want to rewrite FHIR server URL"/>
     <sequence>
         <property name="_OH_INTERNAL_REWRITE_URL_" expression="$func:urlRewrite"/>
-        <header name="Accept" scope="transport" value="application/json+fhir" action="set"/>
+        <header name="Accept" scope="transport" value="application/fhir+json" action="set"/>
 
         <property name="uri.var.httpMethod" expression="$axis2:REST_METHOD"/>
         <property name="uri.var.requestUrl" expression="$axis2:REST_SUB_REQUEST_PATH"/>
 
-        <header name="Content-Type" scope="transport" value="application/json+fhir"/>
+        <header name="Content-Type" scope="transport" value="application/fhir+json"/>
         <filter source="boolean($ctx:_OH_INTERNAL_FHIR_REPO_ACCESS_TOKEN_)" regex="true">
             <then>
                 <header name="Authorization" expression="fn:concat('Bearer ', $ctx:_OH_INTERNAL_FHIR_REPO_ACCESS_TOKEN_)"
                         scope="transport" />
             </then>
             <else>
-                <log category="ERROR" description="FAULT" level="custom">
-                    <property name="ERROR" value="Access token is not there. Authorization issue will occur"/>
+                <log category="WARN" description="FAULT" level="custom">
+                    <property name="Info" value="Access token is not present. Accessing FHIR server with no auth."/>
                 </log>
-                <class name="org.wso2.healthcare.integration.common.mediators.FHIRSynapseExceptionHanlder">
-                    <property name="errorSeverity" value="error"/>
-                    <property name="errorCode" value="login"/>
-                    <property name="errorDetailCode" value="Login Required"/>
-                    <property name="errorDetailSystem" value="Access token is not there. Authorization issue will occur."/>
-                    <property name="errorDiagnostic" value="Authentication failed."/>
-                </class>
             </else>
         </filter>
         <call>
