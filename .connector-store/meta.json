@@ -1,21 +1,21 @@
 {
-  "name" : "FHIR Repository Connector",
-  "owner" : "WSO2",
-  "category": "Developer Tools",
-  "documentationUrl": "https://github.com/wso2-extensions/esb-connector-fhirrepository/tree/main/docs/config.md",
-  "description": "The FHIR Repository Connector allows you to connect to a FHIR repository/store and perform standard FHIR interactions.",
-  "status": "Active",
-  "labels": [
-    "FHIR",
-    "Healthcare"
-  ],
-  "releases": [
-    {
-      "tagName": "v1.0.1",
-      "products": [
-        "MI 4.2.0",
-        "MI 1.2.0"
-      ]
-    }
-  ]
+    "name": "FHIR Repository Connector",
+    "owner": "WSO2",
+    "category": "Developer Tools",
+    "documentationUrl": "https://github.com/wso2-extensions/esb-connector-fhirrepository/tree/main/docs/config.md",
+    "description": "The FHIR Repository Connector allows you to connect to a FHIR repository/store and perform standard FHIR interactions.",
+    "status": "Active",
+    "labels": [
+        "FHIR",
+        "healthcare"
+    ],
+    "releases": [
+        {
+            "tagName": "v1.0.0",
+            "products": [
+                "MI 4.2.0",
+                "MI 1.2.0"
+            ]
+        }
+    ]
 }
