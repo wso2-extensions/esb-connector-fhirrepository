@@ -20,8 +20,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wso2.carbon.esb.connector</groupId>
-    <artifactId>org.wso2.carbon.esb.connector.fhirrepository</artifactId>
+    <groupId>org.wso2.integration.connector</groupId>
+    <artifactId>mi-connector-fhirrepository</artifactId>
     <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>FHIR Repository Connector</name>
@@ -46,6 +46,13 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -87,7 +94,7 @@
                         <id>assemble-connector</id>
                         <phase>compile</phase>
                         <goals>
-                            <goal>attached</goal>
+                            <goal>single</goal>
                         </goals>
                         <configuration>
                             <finalName>${connector.name}-connector-${project.version}</finalName>
