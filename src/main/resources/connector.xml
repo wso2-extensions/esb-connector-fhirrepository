@@ -36,5 +36,6 @@
         <dependency component="bulkFile" />
         <description>WSO2 fhirrepository connector library</description>
     </component>
+    <displayName>FHIR Repository</displayName>
     <icon>icon/icon-small.png</icon>
 </connector>
