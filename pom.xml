@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.integration.connector</groupId>
     <artifactId>mi-connector-fhirrepository</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
     <name>FHIR Repository Connector</name>
     <url>http://wso2.org</url>
@@ -46,7 +46,7 @@
         <connection>scm:git:https://github.com/wso2-extensions/esb-connector-fhirrepository</connection>
         <url>https://github.com/wso2-extensions/esb-connector-fhirrepository.git</url>
         <developerConnection>scm:git:https://github.com/wso2-extensions/esb-connector-fhirrepository</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v1.0.3</tag>
     </scm>
 
     <build>
