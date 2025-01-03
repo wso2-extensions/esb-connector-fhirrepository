@@ -38,8 +38,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.wso2.carbon.module</groupId>
-            <artifactId>mediation--module</artifactId>
+            <groupId>org.wso2.integration.module</groupId>
+            <artifactId>mi-module-fhirbase</artifactId>
             <version>${fhir-base.version}</version>
         </dependency>
     </dependencies>
