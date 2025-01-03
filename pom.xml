@@ -30,7 +30,7 @@
     <properties>
         <connector.name>fhirrepository</connector.name>
         <skip-tests>true</skip-tests>
-        <fhir-base.version>1.0.0</fhir-base.version>
+        <fhir-base.version>1.1.1</fhir-base.version>
         <hapi-fhir.version>4.1.0</hapi-fhir.version>
         <caffeine.version>2.7.0</caffeine.version>
         <ucum.version>1.0.2</ucum.version>
