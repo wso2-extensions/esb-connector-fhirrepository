@@ -44,6 +44,13 @@
         </dependency>
     </dependencies>
 
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/esb-connector-fhirrepository</connection>
+        <url>https://github.com/wso2-extensions/esb-connector-fhirrepository.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/esb-connector-fhirrepository</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
