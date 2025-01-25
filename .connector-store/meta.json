@@ -78,12 +78,7 @@
                     "isHidden":false
                 }
             ],
-            "connections": [
-                {
-                    "name": "fhirrepository",
-                    "description": "Connection for interacting with FHIR repositories."
-                }
-            ],
+            "connections": [],
             "isHidden": false
         },
         {
@@ -149,12 +144,7 @@
                     "isHidden":false
                 }
             ],
-            "connections": [
-                {
-                    "name": "fhirrepository",
-                    "description": "Connection for interacting with FHIR repositories."
-                }
-            ],
+            "connections": [],
             "isHidden": false
         }
     ]
